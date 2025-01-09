@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Branch;
 use App\Models\BranchHistory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 class BranchHistoryRepository
@@ -21,10 +22,11 @@ class BranchHistoryRepository
   }
   public function createHistory(Branch $branch, string $action)
   {
-    BranchHistory::create([
+    return BranchHistory::create([
       'branch_id' => $branch->id,
       'user_id' => Auth::id(),
       'action' => $action
     ]);
+    
   }
 }

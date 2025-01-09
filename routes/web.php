@@ -19,7 +19,7 @@ Route::middleware('auth:web')->group(function () {
     Route::resource('branches', BranchController::class);
 });
 Route::middleware('auth:admin')->group(function () {
-    Route::post('logout', [AdminLoginController::class, 'logout'])->name('admins.logout');
+    Route::post('admin/logout', [AdminLoginController::class, 'logout'])->name('admins.logout');
 
     Route::get('branch-histories', BranchHistoryController::class)->name('branch-histories.index');
 });

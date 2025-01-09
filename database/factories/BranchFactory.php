@@ -17,7 +17,10 @@ class BranchFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->company,
+            'address' => $this->faker->address,
+            'latitude' => rand(-90, 90),
+            'longitude' => rand(-180, 180),
         ];
     }
 }

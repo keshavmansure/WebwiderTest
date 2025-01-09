@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Branch;
+use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 class BranchRepository
@@ -12,7 +13,10 @@ class BranchRepository
 
   public function getBranches()
   {
-    return DataTables::of(Branch::query())
+    $branches = Cache::remember('branches', 3600, function () {
+      return Branch::all();
+    });
+    return DataTables::of($branches)
       ->addIndexColumn()
       ->addColumn('action', function ($branch) {
         return view('branches.actions', compact('branch'));
@@ -26,14 +30,20 @@ class BranchRepository
 
   public function create(array $data)
   {
-    return Branch::create($data);
+    $branch =  Branch::create($data);
+    Cache::forget('branches');
+    return $branch;
   }
   public function update(Branch $branch, array $data)
   {
-    return    $branch->update($data);
+    $branch->update($data);
+    Cache::forget('branches');
+    return $branch;
   }
   public function delete(Branch $branch)
   {
     $branch->delete($branch);
+    Cache::forget('branches');
+    return true;
   }
 }
